@@ -1,2 +1,1157 @@
-# Seu-Guia-de-Calistenia-Interativo
-Um "Seu Guia de Calistenia Interativo", com foco no auxílio na hora de criar sua rotina de treino
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Plano de Treino Interativo de Calistenia</title>
+    <!-- Inclui a biblioteca Tailwind CSS via CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Inclui a biblioteca Chart.js para os gráficos -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Inclui a fonte Inter e o Font Awesome para ícones -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        /* Estilos base e animações */
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #fdfaf6;
+            color: #3a3a3a;
+        }
+        .tab-active {
+            border-bottom-color: #f59e0b;
+            color: #f59e0b;
+        }
+        .routine-tab.tab-active {
+            border-bottom-color: #f59e0b;
+            color: #f59e0b;
+        }
+        .level-card {
+            transition: all 0.3s ease-in-out;
+        }
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 100;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgb(0,0,0);
+            background-color: rgba(0,0,0,0.4);
+            justify-content: center;
+            align-items: center;
+        }
+        .modal-content {
+            background-color: #fefefe;
+            margin: auto;
+            padding: 24px;
+            border-radius: 1rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            max-width: 400px;
+            text-align: center;
+        }
+        .scrollable-list {
+            max-height: 400px;
+            overflow-y: auto;
+            border: 1px solid #e5e7eb;
+            border-radius: 0.5rem;
+            padding: 1rem;
+        }
+        .expandable-header {
+            cursor: pointer;
+            user-select: none;
+        }
+        .animate-slide-in {
+            animation: slide-in 0.5s forwards;
+        }
+        .animate-slide-out {
+            animation: slide-out 0.5s forwards;
+        }
+        @keyframes slide-in {
+            from { transform: translateY(-100%); }
+            to { transform: translateY(0); }
+        }
+        @keyframes slide-out {
+            from { transform: translateY(0); }
+            to { transform: translateY(-100%); }
+            display: bg-black; /* Adiciona isso para esconder o elemento completamente após a animação */
+        }
+        .exercise-item:hover {
+            background-color: #f5f5f5;
+        }
+        .selected-exercise {
+            background-color: #fef3c7;
+            border-color: #fbbf24;
+        }
+        .fade-in {
+            animation: fadeIn 0.5s ease-in-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <!-- Language Switcher Container -->
+    <div class="absolute top-4 left-4 flex gap-2 z-20">
+        <!-- Button for Brazil flag (Portuguese) -->
+        <button id="lang-pt" class="lang-button p-2 rounded-lg transition-all duration-300 transform hover:scale-110 active:scale-95 border-2 border-transparent focus:border-blue-500">
+            <!-- SVG of Brazil flag -->
+            <svg class="w-8 h-8 rounded-full shadow-md" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="256" cy="256" r="256" fill="#009240"/>
+                <circle cx="256" cy="256" r="236" fill="#f8e52e"/>
+                <path fill="#002776" d="M128 256c0-70.76 57.24-128 128-128s128 57.24 128 128-57.24 128-128 128-128-57.24-128-128z"/>
+            </svg>
+        </button>
+
+        <!-- Button for USA flag (English) -->
+        <button id="lang-en" class="lang-button p-2 rounded-lg transition-all duration-300 transform hover:scale-110 active:scale-95 border-2 border-transparent focus:border-blue-500">
+            <!-- SVG of USA flag -->
+            <svg class="w-8 h-8 rounded-full shadow-md" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+                <rect width="512" height="512" fill="#fff"/>
+                <rect y="36.57" width="512" height="36.57" fill="#c00"/>
+                <rect y="109.71" width="512" height="36.57" fill="#c00"/>
+                <rect y="182.86" width="512" height="36.57" fill="#c00"/>
+                <rect y="256" width="512" height="36.57" fill="#c00"/>
+                <rect y="329.14" width="512" height="36.57" fill="#c00"/>
+                <rect y="402.29" width="512" height="36.57" fill="#c00"/>
+                <rect y="475.43" width="512" height="36.57" fill="#c00"/>
+                <rect width="204.8" height="256" fill="#002868"/>
+                <g fill="#fff">
+                    <path d="M102.4 17.07l-3.32 10.22L89.6 17.07l-10.22 3.32 10.22 3.32-3.32 10.22 10.22-3.32 3.32 10.22 3.32-10.22 10.22 3.32-3.32-10.22 10.22-3.32-10.22-3.32 3.32-10.22-3.32 10.22zM153.6 51.2l-3.32 10.22-10.22 3.32 10.22 3.32-3.32 10.22 10.22-3.32 3.32 10.22 3.32-10.22 10.22 3.32-3.32-10.22 10.22-3.32-10.22-3.32 3.32-10.22-3.32 10.22zM170.67 102.4l-3.32 10.22-10.22 3.32 10.22 3.32-3.32 10.22 10.22-3.32 3.32 10.22 3.32-10.22 10.22 3.32-3.32-10.22 10.22-3.32-10.22-3.32 3.32-10.22-3.32 10.22zM102.4 136.53l-3.32 10.22-10.22 3.32 10.22 3.32-3.32 10.22 10.22-3.32 3.32 10.22 3.32-10.22 10.22 3.32-3.32-10.22 10.22-3.32-10.22-3.32 3.32-10.22-3.32 10.22zM51.2 170.67l-3.32 10.22-10.22 3.32 10.22 3.32-3.32 10.22 10.22-3.32 3.32 10.22 3.32-10.22 10.22 3.32-3.32-10.22 10.22-3.32-10.22-3.32 3.32-10.22-3.32 10.22zM136.53 170.67l-3.32 10.22-10.22 3.32 10.22 3.32-3.32 10.22 10.22-3.32 3.32 10.22 3.32-10.22 10.22 3.32-3.32-10.22 10.22-3.32-10.22-3.32 3.32-10.22-3.32 10.22zM187.73 170.67l-3.32 10.22-10.22 3.32 10.22 3.32-3.32 10.22 10.22-3.32 3.32 10.22 3.32-10.22 10.22 3.32-3.32-10.22 10.22-3.32-10.22-3.32 3.32-10.22-3.32 10.22zM102.4 204.8l-3.32 10.22-10.22 3.32 10.22 3.32-3.32 10.22 10.22-3.32 3.32 10.22 3.32-10.22 10.22 3.32-3.32-10.22 10.22-3.32-10.22-3.32 3.32-10.22-3.32 10.22z"/>
+                </g>
+            </svg>
+        </button>
+    </div>
+
+    <div class="container mx-auto p-4 sm:p-6 md:p-8 max-w-7xl">
+
+        <header class="text-center mb-10">
+            <h1 id="main-title" class="text-4xl md:text-5xl font-bold text-gray-800"></h1>
+            <p id="main-subtitle" class="mt-2 text-lg text-gray-600"></p>
+            <p id="user-info" class="text-sm text-gray-400 mt-2"></p>
+        </header>
+
+        <!-- Main Navigation Bar -->
+        <nav class="flex flex-wrap justify-center border-b-2 border-gray-200 mb-8">
+            <button data-section="principles" class="nav-link py-4 px-6 text-lg font-semibold text-gray-500 hover:text-amber-500 focus:outline-none"></button>
+            <button data-section="routines" class="nav-link py-4 px-6 text-lg font-semibold text-gray-500 hover:text-amber-500 focus:outline-none"></button>
+            <button data-section="levels" class="nav-link py-4 px-6 text-lg font-semibold text-gray-500 hover:text-amber-500 focus:outline-none"></button>
+            <button data-section="schedule" class="nav-link py-4 px-6 text-lg font-semibold text-gray-500 hover:text-amber-500 focus:outline-none"></button>
+            <button data-section="exercise-database" class="nav-link py-4 px-6 text-lg font-semibold text-gray-500 hover:text-amber-500 focus:outline-none"></button>
+            <button data-section="custom" class="nav-link py-4 px-6 text-lg font-semibold text-gray-500 hover:text-amber-500 focus:outline-none"></button>
+        </nav>
+        
+        <!-- Loading and Status Messages -->
+        <div id="status-message" class="hidden fixed top-0 left-0 right-0 p-4 text-center text-white font-bold transition-transform duration-300 transform translate-y-0" style="background-color: #f59e0b;"></div>
+
+
+        <main id="app-content" class="fade-in">
+
+            <!-- Principles Section -->
+            <section id="principles-section" class="content-section">
+                <div class="bg-white p-8 rounded-2xl shadow-lg">
+                    <h2 id="principles-title" class="text-3xl font-bold text-gray-800 mb-6 text-center"></h2>
+                    <div id="principles-grid" class="grid md:grid-cols-2 lg:grid-cols-3 gap-8 text-center"></div>
+                </div>
+            </section>
+
+            <!-- Routines Section -->
+            <section id="routines-section" class="content-section hidden">
+                <div class="flex justify-center border-b border-gray-200">
+                    <button data-routine="pushups" class="routine-tab py-2 px-4 text-base font-semibold text-gray-500 border-b-2 border-transparent hover:border-amber-500 hover:text-amber-500"></button>
+                    <button data-routine="pullups" class="routine-tab py-2 px-4 text-base font-semibold text-gray-500 border-b-2 border-transparent hover:border-amber-500 hover:text-amber-500"></button>
+                    <button data-routine="squats" class="routine-tab py-2 px-4 text-base font-semibold text-gray-500 border-b-2 border-transparent hover:border-amber-500 hover:text-amber-500"></button>
+                </div>
+
+                <div class="mt-8">
+                    <div class="chart-container relative w-full max-w-3xl mx-auto h-80 md:h-96">
+                        <canvas id="progressChart"></canvas>
+                    </div>
+                </div>
+
+                <div id="routine-details" class="mt-8"></div>
+            </section>
+
+            <!-- Levels Section -->
+            <section id="levels-section" class="content-section hidden">
+                <div id="levels-details" class="mt-8"></div>
+            </section>
+
+            <!-- Schedule Section -->
+            <section id="schedule-section" class="content-section hidden">
+                <div class="bg-white p-8 rounded-2xl shadow-lg">
+                    <h2 id="schedule-title" class="text-3xl font-bold text-gray-800 mb-6 text-center"></h2>
+                    <div id="schedule-grid" class="grid md:grid-cols-2 gap-8"></div>
+                </div>
+            </section>
+            
+            <!-- Exercise Database Section -->
+            <section id="exercise-database-section" class="content-section hidden">
+                <div class="bg-white p-8 rounded-2xl shadow-lg">
+                    <h2 id="db-title" class="text-3xl font-bold text-gray-800 mb-6 text-center"></h2>
+                    <div id="exercise-database-list" class="space-y-6"></div>
+                </div>
+            </section>
+
+            <!-- Custom Routine Section -->
+            <section id="custom-section" class="content-section hidden">
+                <div class="bg-white p-8 rounded-2xl shadow-lg">
+                    <h2 id="custom-title" class="text-3xl font-bold text-gray-800 mb-6 text-center"></h2>
+                    <div class="max-w-xl mx-auto">
+                        <div class="mb-4">
+                            <label id="routine-name-label" for="routine-name" class="block text-gray-700 text-sm font-bold mb-2"></label>
+                            <input type="text" id="routine-name" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="">
+                        </div>
+                        
+                        <div id="selected-exercises-list" class="mb-4 space-y-2">
+                            <h3 id="selected-exercises-title" class="text-lg font-semibold text-gray-700"></h3>
+                            <p id="no-exercises-message" class="text-gray-500 italic"></p>
+                        </div>
+
+                        <div class="flex space-x-2 mb-6">
+                            <button id="add-from-db-btn" class="bg-gray-200 text-gray-700 font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline hover:bg-gray-300">
+                                <i class="fas fa-plus mr-2"></i><span id="add-from-db-text"></span>
+                            </button>
+                            <button id="add-manual-btn" class="bg-gray-200 text-gray-700 font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline hover:bg-gray-300">
+                                <i class="fas fa-pencil-alt mr-2"></i><span id="add-manual-text"></span>
+                            </button>
+                        </div>
+
+                        <div id="exercise-input-section" class="space-y-2 hidden">
+                            <label id="add-manual-label" for="exercise-manual" class="block text-gray-700 text-sm font-bold mb-2"></label>
+                            <div class="flex items-center space-x-2">
+                                <input type="text" id="exercise-manual" class="exercise-input-manual shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="">
+                                <button id="add-manual-confirm-btn" class="bg-amber-500 hover:bg-amber-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"></button>
+                            </div>
+                        </div>
+
+                        <div class="text-right">
+                             <button id="save-routine-btn" class="bg-amber-500 hover:bg-amber-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"></button>
+                        </div>
+
+                    </div>
+                    
+                    <div id="custom-routines-display" class="mt-8">
+                        <h3 id="saved-routines-title" class="text-2xl font-bold text-gray-800 mb-4 text-center"></h3>
+                        <div id="saved-routines-list" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                            <p class="text-center text-gray-500"></p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+        
+        <!-- Confirmation Modal -->
+        <div id="confirm-modal" class="modal fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden z-50">
+            <div class="bg-white rounded-lg p-6 max-w-sm mx-auto shadow-xl">
+                <h3 id="confirm-modal-title" class="text-xl font-bold mb-4"></h3>
+                <p id="confirm-modal-text" class="text-gray-700 mb-6"></p>
+                <div class="flex justify-center space-x-4">
+                    <button id="confirm-no-btn" class="bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold py-2 px-4 rounded"></button>
+                    <button id="confirm-yes-btn" class="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded"></button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Exercise Selection Modal -->
+        <div id="exercise-select-modal" class="modal fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden z-50">
+            <div class="bg-white rounded-lg p-8 max-w-2xl mx-auto shadow-xl w-full">
+                <h3 id="select-modal-title" class="text-2xl font-bold mb-4 text-gray-800 text-center"></h3>
+                <div id="exercise-selection-list" class="scrollable-list space-y-4"></div>
+                <div class="mt-6 text-right">
+                    <button id="close-select-modal-btn" class="bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold py-2 px-4 rounded"></button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        // Objeto de internacionalização (i18n) que contém todas as strings de texto em português e inglês.
+        const i18n = {
+            pt: {
+                title: 'Seu Guia de Calistenia Interativo',
+                subtitle: 'Explore os exercícios, acompanhe sua progressão e organize sua rotina.',
+                localStorageInfo: 'Dados salvos localmente.',
+                nav: {
+                    principles: 'Princípios da Rotina',
+                    routines: 'Rotinas de Exercícios',
+                    levels: 'Progressão por Nível',
+                    schedule: 'Organizando sua Semana',
+                    database: 'Banco de Exercícios',
+                    custom: 'Criar Rotina Personalizada'
+                },
+                status: {
+                    saved: 'Rotina salva com sucesso!',
+                    error: 'Erro ao salvar rotina.',
+                    addedManual: 'Exercício adicionado manualmente.',
+                    added: 'Adicionado:',
+                    removed: 'Removido:',
+                    nameRequired: 'Por favor, dê um nome à sua rotina.',
+                    exercisesRequired: 'Adicione pelo menos um exercício à sua rotina.',
+                    deleted: 'Rotina apagada com sucesso!'
+                },
+                principles: {
+                    title: 'Entendendo as Propriedades do Treino',
+                    reps: { title: 'Repetições (Reps)', description: 'O número de vezes que você executa um exercício específico. É o alicerce para construir volume de treino e resistência muscular. Por exemplo, 3 repetições de um agachamento.' },
+                    sets: { title: 'Sets', description: 'Um grupo de repetições. Aumentar o número de sets é uma forma eficaz de progredir quando você já consegue fazer muitas repetições. Exemplo: 3 sets de 10 flexões, com descanso entre os sets.' },
+                    tempo: { title: 'Tempo', description: "A velocidade e ritmo de cada fase de um exercício (ex: 2010). '2' segundos na descida, '0's de pausa, '1's na subida e '0's de pausa no topo. É fundamental para aprimorar a técnica e o controle muscular." },
+                    rest: { title: 'Descanso (Rest)', description: 'O intervalo entre os sets. É crucial para a recuperação muscular e para manter a qualidade da execução dos próximos sets. O tempo de descanso varia de acordo com seu objetivo: mais curto para resistência, mais longo para força.' },
+                    superset: { title: 'Superset', description: 'Uma sequência de dois ou mais exercícios realizados consecutivamente, sem descanso. Geralmente, combinam-se exercícios de grupos musculares opostos (ex: flexões e remadas) para otimizar o tempo e aumentar a intensidade.' },
+                    time: { title: 'Tempo (isométrico)', description: 'A duração que você mantém uma posição estática. É a principal medida para exercícios isométricos, que fortalecem músculos e estabilizam articulações sem movimento, como na prancha ou na ponte.' }
+                },
+                routines: {
+                    title: (label) => `${label} - Níveis de Progressão`,
+                    chartLabel: (label) => `Progresso de ${label}`,
+                    chartXAxis: 'Semanas',
+                    chartYAxis: 'Repetições',
+                    level: (level) => `Nível ${level}`
+                },
+                schedule: {
+                    title: 'Organizando Sua Rotina Semanal',
+                    stacking: {
+                        title: 'Empilhando Rotinas (Stacking)',
+                        description: 'Neste método, você trabalha sequencialmente cada nível escolhido de pull-up, push-up e squat. Por exemplo, se você selecionar o nível 2 de push-up, nível 3 de pull-up e nível 3 de squat, você completa todos os sets da rotina de push-up antes de passar para a próxima. Uma sessão de treino de força ideal leva cerca de 30 minutos.'
+                    },
+                    triplets: {
+                        title: 'Agrupando em Triplets',
+                        description: 'Para eficiência, este método envolve o treinamento de grupos musculares antagonistas. Você alterna exercícios de cada rotina. Por exemplo, um triplet consiste em um exercício de push-up, um de pull-up e um de squat. Este método reduz significativamente o tempo total de treino, pois o tempo de descanso para um grupo muscular ocorre enquanto você trabalha outro.'
+                    },
+                    oneDay: {
+                        title: 'Rotina de Um Dia',
+                        description: 'Este programa foca em dedicar cada dia a uma rotina específica, permitindo o treinamento direcionado duas vezes por semana com um dia de descanso entre eles. Por exemplo, treine push-ups na segunda-feira, pull-ups na terça, descanse na quarta e repita o ciclo. A desvantagem é que você só treinará cada rotina duas vezes por semana, mas é ótimo para agendas apertadas.'
+                    }
+                },
+                database: {
+                    title: 'Banco de Dados de Exercícios',
+                    level: (level) => `Nível ${level}:`
+                },
+                custom: {
+                    title: 'Criar Rotina Personalizada',
+                    routineName: 'Nome da Rotina',
+                    routinePlaceholder: 'Ex: Treino de Força',
+                    selectedExercisesTitle: 'Exercícios na Rotina:',
+                    noExercises: 'Nenhum exercício adicionado ainda.',
+                    addFromDb: 'Adicionar do Banco de Dados',
+                    addManual: 'Adicionar Manualmente',
+                    addManualLabel: 'Adicionar Novo Exercício Manualmente',
+                    addManualPlaceholder: 'Ex: Barra Fixa (3x8)',
+                    addButton: 'Adicionar',
+                    saveButton: 'Salvar Rotina',
+                    savedRoutinesTitle: 'Minhas Rotinas Salvas',
+                    loadingRoutines: 'Carregando rotinas salvas...',
+                    noSavedRoutines: 'Nenhuma rotina salva ainda.',
+                    deleteButton: 'Apagar'
+                },
+                modals: {
+                    confirm: {
+                        title: 'Confirmar Exclusão',
+                        text: 'Tem certeza que deseja apagar esta rotina?',
+                        no: 'Não',
+                        yes: 'Sim, Apagar'
+                    },
+                    select: {
+                        title: 'Selecionar Exercícios',
+                        close: 'Fechar'
+                    }
+                },
+                routinesData: {
+                    pushups: {
+                        label: 'Flexões (Push-ups)',
+                        color: 'rgba(239, 68, 68, 0.6)',
+                        levels: [
+                            { level: 1, exercises: ['Flexões de Escápula (4x8)', 'Flexões Negativas (3x8)', 'Prancha (3x60s)'] },
+                            { level: 2, exercises: ['Flexões Normais (3x12)', 'Flexões de Escápula (3x8)', 'Flexões Negativas (3x8)', 'Prancha (3x60s)'] },
+                            { level: 3, exercises: ['Flexões Diamante (3x15)', 'Extensões de Tríceps (3x8)', 'Flexões Normais (4x8)'] },
+                            { level: 4, exercises: ['Flexões Archer (3x2/braço)', 'Flexões Diamante (2x10)', 'Flexões Explosivas (2x8)', 'Prancha (3x60s)'] },
+                            { level: 5, exercises: ['Flexões de Um Braço (3x1/braço)', 'Flexões Archer (3x4/braço)', 'Flexões Diamante (3x10)', 'Flexões Normais (3x8)', 'Flexões Abertas (3x8)'] }
+                        ]
+                    },
+                    pullups: {
+                        label: 'Barras Fixas (Pull-ups)',
+                        color: 'rgba(59, 130, 246, 0.6)',
+                        levels: [
+                            { level: 1, exercises: ['Remada Invertida com Barra (3x15)', 'Susp. Passiva (3x60s)'] },
+                            { level: 2, exercises: ['Remada Invertida (3x12)', 'Barras de Escápula (3x12)'] },
+                            { level: 3, exercises: ['Barra Fixa com Elástico (3x6)', 'Remada Invertida (3x12)', 'Barras de Escápula (3x12)'] },
+                            { level: 4, exercises: ['Barra Fixa Negativa (5x3)', 'Barra Fixa com Elástico (3x6)', 'Remada Invertida (3x8)', 'Barras de Escápula (3x8)'] },
+                            { level: 5, exercises: ['Barra Fixa (3x5)', 'Barra Fixa com Elástico (3x10)', 'Remada Invertida (3x8)', 'Barras de Escápula (3x8)', 'Susp. Passiva (3x30s)'] }
+                        ]
+                    },
+                    squats: {
+                        label: 'Agachamentos (Squats)',
+                        color: 'rgba(34, 197, 94, 0.6)',
+                        levels: [
+                            { level: 1, exercises: ['Agachamentos Profundos (3x12)', 'Agachamentos com Pés Juntos (3x12)', 'Agachamentos com Peso Corporal (3x15)'] },
+                            { level: 2, exercises: ['Agachamento Búlgaro (3x10/perna)', 'Agachamentos Profundos (3x10)', 'Agachamentos com Pés Juntos (3x10)'] },
+                            { level: 3, exercises: ['Agachamento Cossack (2x8/perna)', 'Agachamento Búlgaro (3x8/perna)', 'Agachamentos Profundos (3x8)'] },
+                            { level: 4, exercises: ['Agachamento Pistol (Variantes Fáceis) (3x10/perna)', 'Agachamento Cossack (3x10/perna)', 'Agachamentos Profundos (3x10)'] },
+                            { level: 5, exercises: ['Agachamento Pistol (3x3/perna)', 'Agachamento Pistol (Variantes Fáceis) (3x6/perna)', 'Agachamento Búlgaro (3x10/perna)', 'Agachamento Cossack (3x10/perna)', 'Agachamentos Profundos (3x10)'] }
+                        ]
+                    }
+                }
+            },
+            en: {
+                title: 'Your Interactive Calisthenics Guide',
+                subtitle: 'Explore exercises, track your progress, and organize your routine.',
+                localStorageInfo: 'Data saved locally.',
+                nav: {
+                    principles: 'Routine Principles',
+                    routines: 'Exercise Routines',
+                    levels: 'Level Progression',
+                    schedule: 'Organize Your Week',
+                    database: 'Exercise Database',
+                    custom: 'Create Custom Routine'
+                },
+                status: {
+                    saved: 'Routine saved successfully!',
+                    error: 'Error saving routine.',
+                    addedManual: 'Exercise added manually.',
+                    added: 'Added:',
+                    removed: 'Removed:',
+                    nameRequired: 'Please name your routine.',
+                    exercisesRequired: 'Add at least one exercise to your routine.',
+                    deleted: 'Routine deleted successfully!'
+                },
+                principles: {
+                    title: 'Understanding Training Properties',
+                    reps: { title: 'Repetitions (Reps)', description: 'The number of times you perform a specific exercise. It is the foundation for building training volume and muscular endurance. For example, 3 repetitions of a squat.' },
+                    sets: { title: 'Sets', description: 'A group of repetitions. Increasing the number of sets is an effective way to progress once you can perform many reps. Example: 3 sets of 10 push-ups, with rest in between sets.' },
+                    tempo: { title: 'Tempo', description: "The speed and rhythm of each phase of an exercise (e.g., 2010). '2' seconds on the descent, '0's pause, '1's on the ascent, and '0's pause at the top. It is crucial for improving technique and muscular control." },
+                    rest: { title: 'Rest', description: 'The interval between sets. It is crucial for muscle recovery and maintaining the quality of subsequent sets. Rest time varies depending on your goal: shorter for endurance, longer for strength.' },
+                    superset: { title: 'Superset', description: 'A sequence of two or more exercises performed consecutively, with no rest. They often combine exercises for opposing muscle groups (e.g., push-ups and rows) to optimize time and increase intensity.' },
+                    time: { title: 'Time (isometric)', description: 'The duration you hold a static position. It is the main measure for isometric exercises, which strengthen muscles and stabilize joints without movement, such as in a plank or bridge.' }
+                },
+                routines: {
+                    title: (label) => `${label} - Progression Levels`,
+                    chartLabel: (label) => `Progress of ${label}`,
+                    chartXAxis: 'Weeks',
+                    chartYAxis: 'Repetitions',
+                    level: (level) => `Level ${level}`
+                },
+                schedule: {
+                    title: 'Organizing Your Weekly Routine',
+                    stacking: {
+                        title: 'Stacking Routines',
+                        description: 'In this method, you work sequentially on each chosen level of pull-up, push-up, and squat. For example, if you select level 2 for push-ups, level 3 for pull-ups, and level 3 for squats, you complete all sets of the push-up routine before moving to the next. An ideal strength training session takes about 30 minutes.'
+                    },
+                    triplets: {
+                        title: 'Grouping into Triplets',
+                        description: 'For efficiency, this method involves training antagonistic muscle groups. You alternate exercises from each routine. For example, a triplet consists of a push-up exercise, a pull-up, and a squat. This method significantly reduces total workout time, as rest for one muscle group occurs while you are working another.'
+                    },
+                    oneDay: {
+                        title: 'One-Day Routine',
+                        description: 'This program focuses on dedicating each day to a specific routine, allowing targeted training twice a week with a rest day in between. For example, train push-ups on Monday, pull-ups on Tuesday, rest on Wednesday, and repeat the cycle. The disadvantage is that you will only train each routine twice a week, but it is great for busy schedules.'
+                    }
+                },
+                database: {
+                    title: 'Exercise Database',
+                    level: (level) => `Level ${level}:`
+                },
+                custom: {
+                    title: 'Create Custom Routine',
+                    routineName: 'Routine Name',
+                    routinePlaceholder: 'Ex: Strength Training',
+                    selectedExercisesTitle: 'Exercises in Routine:',
+                    noExercises: 'No exercises added yet.',
+                    addFromDb: 'Add from Database',
+                    addManual: 'Add Manually',
+                    addManualLabel: 'Add New Exercise Manually',
+                    addManualPlaceholder: 'Ex: Pull-ups (3x8)',
+                    addButton: 'Add',
+                    saveButton: 'Save Routine',
+                    savedRoutinesTitle: 'My Saved Routines',
+                    loadingRoutines: 'Loading saved routines...',
+                    noSavedRoutines: 'No routines saved yet.',
+                    deleteButton: 'Delete'
+                },
+                modals: {
+                    confirm: {
+                        title: 'Confirm Deletion',
+                        text: 'Are you sure you want to delete this routine?',
+                        no: 'No',
+                        yes: 'Yes, Delete'
+                    },
+                    select: {
+                        title: 'Select Exercises',
+                        close: 'Close'
+                    }
+                },
+                routinesData: {
+                    pushups: {
+                        label: 'Push-ups',
+                        color: 'rgba(239, 68, 68, 0.6)',
+                        levels: [
+                            { level: 1, exercises: ['Scapula Push-Ups (4x8)', 'Negative Push-Ups (3x8)', 'Plank Hold (3x60s)'] },
+                            { level: 2, exercises: ['Normal Push-Ups (3x12)', 'Scapula Push-Ups (3x8)', 'Negative Push-Ups (3x8)', 'Plank Hold (3x60s)'] },
+                            { level: 3, exercises: ['Diamond Push-Ups (3x15)', 'Triceps Extensions (3x8)', 'Normal Push-Ups (4x8)'] },
+                            { level: 4, exercises: ['Archer Push-Ups (3x2/arm)', 'Diamond Push-Ups (2x10)', 'Explosive Push-Ups (2x8)', 'Plank Hold (3x60s)'] },
+                            { level: 5, exercises: ['One-Arm Push-Ups (3x1/arm)', 'Archer Push-Ups (3x4/arm)', 'Diamond Push-Ups (3x10)', 'Normal Push-Ups (3x8)', 'Wide Push-Ups (3x8)'] }
+                        ]
+                    },
+                    pullups: {
+                        label: 'Pull-ups',
+                        color: 'rgba(59, 130, 246, 0.6)',
+                        levels: [
+                            { level: 1, exercises: ['Bent Over Barbell Rows (3x15)', 'Passive Hang (3x60s)'] },
+                            { level: 2, exercises: ['Australian Pull-Ups (3x12)', 'Scapula Pull-Ups (3x12)'] },
+                            { level: 3, exercises: ['Band Assisted Pull-Ups (3x6)', 'Australian Pull-Ups (3x12)', 'Scapula Pull-Ups (3x12)'] },
+                            { level: 4, exercises: ['Negative Pull-Ups (5x3)', 'Band Assisted Pull-Ups (3x6)', 'Australian Pull-Ups (3x8)', 'Scapula Pull-Ups (3x8)'] },
+                            { level: 5, exercises: ['Pull-Ups (3x5)', 'Band Assisted Pull-Ups (3x10)', 'Australian Pull-Ups (3x8)', 'Scapula Pull-Ups (3x8)', 'Passive Hang (3x30s)'] }
+                        ]
+                    },
+                    squats: {
+                        label: 'Squats',
+                        color: 'rgba(34, 197, 94, 0.6)',
+                        levels: [
+                            { level: 1, exercises: ['Deep Squats (3x12)', 'Narrow Stance Squats (3x12)', 'Bodyweight Squats (3x15)'] },
+                            { level: 2, exercises: ['Bulgarian Split Squats (3x10/leg)', 'Deep Squats (3x10)', 'Narrow Stance Squats (3x10)'] },
+                            { level: 3, exercises: ['Cossack Squats (2x8/leg)', 'Bulgarian Split Squats (3x8/leg)', 'Deep Squats (3x8)'] },
+                            { level: 4, exercises: ['Pistol Squats Easier Variants (3x10/leg)', 'Cossack Squats (3x10/leg)', 'Deep Squats (3x10)'] },
+                            { level: 5, exercises: ['Pistol Squats (3x3/leg)', 'Pistol Squats Easier Variants (3x6/leg)', 'Bulgarian Split Squats (3x10/leg)', 'Cossack Squats (3x10/leg)', 'Deep Squats (3x10)'] }
+                        ]
+                    }
+                }
+            }
+        };
+
+        // Estado global da aplicação
+        const localStorageKey = 'calisthenics_routines';
+        let customRoutines = [];
+        let exercisesInCustomRoutine = [];
+        let currentLang = 'pt'; // Define o idioma padrão como português
+        let langData = i18n[currentLang];
+
+        // Obtém referências para os elementos do DOM
+        const navLinks = document.querySelectorAll('.nav-link');
+        const routineTabs = document.querySelectorAll('.routine-tab');
+        const contentSections = document.querySelectorAll('.content-section');
+        const routineDetailsContainer = document.getElementById('routine-details');
+        const levelsDetailsContainer = document.getElementById('levels-details');
+        const chartCanvas = document.getElementById('progressChart');
+        const saveRoutineBtn = document.getElementById('save-routine-btn');
+        const savedRoutinesList = document.getElementById('saved-routines-list');
+        const confirmModal = document.getElementById('confirm-modal');
+        const confirmYesBtn = document.getElementById('confirm-yes-btn');
+        const confirmNoBtn = document.getElementById('confirm-no-btn');
+        const exerciseDatabaseList = document.getElementById('exercise-database-list');
+        const addFromDbBtn = document.getElementById('add-from-db-btn');
+        const addManualBtn = document.getElementById('add-manual-btn');
+        const addManualConfirmBtn = document.getElementById('add-manual-confirm-btn');
+        const manualInputSection = document.getElementById('exercise-input-section');
+        const manualInput = document.getElementById('exercise-manual');
+        const selectedExercisesList = document.getElementById('selected-exercises-list');
+        const noExercisesMessage = document.getElementById('no-exercises-message');
+        const exerciseSelectModal = document.getElementById('exercise-select-modal');
+        const exerciseSelectionList = document.getElementById('exercise-selection-list');
+        const closeSelectModalBtn = document.getElementById('close-select-modal-btn');
+        const userInfoElement = document.getElementById('user-info');
+        const statusMessageElement = document.getElementById('status-message');
+        const langButtons = document.querySelectorAll('.lang-button');
+
+        let progressChart;
+        let routineToDeleteId = null;
+
+        /**
+         * Shows a temporary status message to the user.
+         * @param {string} message The message to display.
+         */
+        function showStatusMessage(message) {
+            statusMessageElement.textContent = message;
+            statusMessageElement.classList.remove('hidden', 'animate-slide-out');
+            statusMessageElement.classList.add('animate-slide-in');
+            setTimeout(() => {
+                statusMessageElement.classList.remove('animate-slide-in');
+                statusMessageElement.classList.add('animate-slide-out');
+                setTimeout(() => {
+                    statusMessageElement.classList.add('hidden');
+                }, 500);
+            }, 3000);
+        }
+
+        /**
+         * Loads custom routines from Local Storage.
+         * @returns {Array} An array of saved routines.
+         */
+        function loadRoutines() {
+            try {
+                const routinesJSON = localStorage.getItem(localStorageKey);
+                return routinesJSON ? JSON.parse(routinesJSON) : [];
+            } catch (error) {
+                console.error("Erro ao carregar rotinas do Local Storage:", error);
+                return [];
+            }
+        }
+
+        /**
+         * Saves the current custom routines array to Local Storage.
+         */
+        function saveRoutines() {
+            try {
+                localStorage.setItem(localStorageKey, JSON.stringify(customRoutines));
+                showStatusMessage(langData.status.saved);
+            } catch (error) {
+                console.error("Erro ao salvar rotinas no Local Storage:", error);
+                showStatusMessage(langData.status.error);
+            }
+        }
+        
+        /**
+         * Switches between main sections of the app.
+         * @param {string} sectionId The ID of the section to display.
+         */
+        function switchSection(sectionId) {
+            contentSections.forEach(section => {
+                section.classList.toggle('hidden', section.id !== `${sectionId}-section`);
+            });
+            navLinks.forEach(link => {
+                link.classList.toggle('tab-active', link.dataset.section === sectionId);
+            });
+
+            if (sectionId === 'routines') {
+                switchRoutine('pushups');
+            } else if (sectionId === 'levels') {
+                renderAllLevels();
+            } else if (sectionId === 'custom') {
+                renderCustomRoutineForm();
+                renderSavedRoutines(); // Reload saved routines from storage
+            } else if (sectionId === 'exercise-database') {
+                renderExerciseDatabase();
+            }
+        }
+
+        /**
+         * Switches between different routine tabs (e.g., Push-ups, Pull-ups).
+         * @param {string} routineId The ID of the routine tab to display.
+         */
+        function switchRoutine(routineId) {
+            routineTabs.forEach(tab => {
+                tab.classList.toggle('tab-active', tab.dataset.routine === routineId);
+            });
+            renderRoutineDetails(routineId);
+            updateChart(routineId);
+        }
+
+        /**
+         * Renders the details of a specific routine with its levels and exercises.
+         * @param {string} routineId The ID of the routine to render.
+         */
+        function renderRoutineDetails(routineId) {
+            const routine = langData.routinesData[routineId];
+            if (!routine) return;
+
+            let html = `<h2 class="text-3xl font-bold text-center mb-6 text-gray-800">${langData.routines.title(routine.label)}</h2>`;
+            html += '<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">';
+
+            routine.levels.forEach(({ level, exercises }) => {
+                html += `
+                    <div class="level-card bg-white p-6 rounded-lg shadow-md border-l-4" style="border-color: ${routine.color};">
+                        <h3 class="text-2xl font-semibold mb-4 text-gray-700">${langData.routines.level(level)}</h3>
+                        <ul class="space-y-2">
+                            ${exercises.map(ex => `<li class="text-gray-600">${ex}</li>`).join('')}
+                        </ul>
+                    </div>
+                `;
+            });
+
+            html += '</div>';
+            routineDetailsContainer.innerHTML = html;
+        }
+
+        /**
+         * Renders all exercises consolidated by their level across all routines.
+         */
+        function renderAllLevels() {
+            let html = `<h2 class="text-3xl font-bold text-center mb-6 text-gray-800">${langData.nav.levels}</h2>`;
+            html += '<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">';
+            
+            for (let level = 1; level <= 5; level++) {
+                const exercisesForLevel = [];
+                for (const routineId in langData.routinesData) {
+                    const routine = langData.routinesData[routineId];
+                    const levelData = routine.levels.find(l => l.level === level);
+                    if (levelData) {
+                        levelData.exercises.forEach(exercise => {
+                            exercisesForLevel.push({ name: exercise, routine: routine.label, color: routine.color });
+                        });
+                    }
+                }
+                html += `
+                    <div class="level-card bg-white p-6 rounded-lg shadow-md">
+                        <h3 class="text-2xl font-semibold mb-4 text-gray-700">${langData.routines.level(level)}</h3>
+                        <ul class="space-y-2">
+                            ${exercisesForLevel.map(ex => `<li class="text-gray-600"><span style="color: ${ex.color.replace('0.6', '1')};">●</span> ${ex.name} <span class="text-sm font-semibold text-gray-400">(${ex.routine})</span></li>`).join('')}
+                        </ul>
+                    </div>
+                `;
+            }
+
+            html += '</div>';
+            levelsDetailsContainer.innerHTML = html;
+        }
+
+        /**
+         * Renders the full exercise database.
+         */
+        function renderExerciseDatabase() {
+            let html = '';
+            for (const routineId in langData.routinesData) {
+                const routine = langData.routinesData[routineId];
+                html += `<div class="bg-gray-100 p-4 rounded-lg">
+                             <h3 class="text-xl font-bold text-gray-700 mb-2">${routine.label}</h3>
+                             <ul class="space-y-1">`;
+                routine.levels.forEach(({ level, exercises }) => {
+                    exercises.forEach(exercise => {
+                        html += `<li class="text-gray-600"><span class="font-semibold">${langData.database.level(level)}</span> ${exercise}</li>`;
+                    });
+                });
+                html += `</ul></div>`;
+            }
+            exerciseDatabaseList.innerHTML = html;
+        }
+
+        /**
+         * Renders the list of saved custom routines.
+         */
+        function renderSavedRoutines() {
+            savedRoutinesList.innerHTML = ''; // Clear previous content
+            if (customRoutines.length === 0) {
+                savedRoutinesList.innerHTML = `<p class="text-center text-gray-500">${langData.custom.noSavedRoutines}</p>`;
+                return;
+            }
+
+            customRoutines.forEach(routine => {
+                const routineElement = document.createElement('div');
+                routineElement.className = 'bg-white p-6 rounded-xl shadow-lg flex flex-col justify-between';
+                routineElement.innerHTML = `
+                    <div>
+                        <h3 class="text-xl font-bold text-amber-700 mb-2">${routine.name}</h3>
+                        <ul class="space-y-1 text-gray-600">
+                            ${routine.exercises.map(ex => `<li><i class="fas fa-dumbbell text-gray-400 mr-2"></i>${ex}</li>`).join('')}
+                        </ul>
+                    </div>
+                    <div class="mt-4 text-right">
+                        <button class="delete-routine-btn bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" data-id="${routine.id}">
+                            <i class="fas fa-trash-alt mr-2"></i>${langData.custom.deleteButton}
+                        </button>
+                    </div>
+                `;
+                savedRoutinesList.appendChild(routineElement);
+            });
+        }
+        
+        /**
+         * Renders the custom routine creation form and sets up its state.
+         */
+        function renderCustomRoutineForm() {
+            document.getElementById('routine-name-label').textContent = langData.custom.routineName;
+            document.getElementById('routine-name').placeholder = langData.custom.routinePlaceholder;
+            document.getElementById('add-from-db-text').textContent = langData.custom.addFromDb;
+            document.getElementById('add-manual-text').textContent = langData.custom.addManual;
+            document.getElementById('add-manual-label').textContent = langData.custom.addManualLabel;
+            document.getElementById('exercise-manual').placeholder = langData.custom.addManualPlaceholder;
+            document.getElementById('add-manual-confirm-btn').textContent = langData.custom.addButton;
+            document.getElementById('save-routine-btn').textContent = langData.custom.saveButton;
+            document.getElementById('selected-exercises-title').textContent = langData.custom.selectedExercisesTitle;
+            document.getElementById('no-exercises-message').textContent = langData.custom.noExercises;
+            document.getElementById('saved-routines-title').textContent = langData.custom.savedRoutinesTitle;
+            document.querySelector('#saved-routines-list p').textContent = langData.custom.loadingRoutines;
+
+
+            if (exercisesInCustomRoutine.length > 0) {
+                noExercisesMessage.classList.add('hidden');
+                let html = '';
+                exercisesInCustomRoutine.forEach((exercise, index) => {
+                    html += `
+                        <div class="flex items-center justify-between p-2 rounded-lg bg-gray-100">
+                            <span class="text-gray-700">${exercise}</span>
+                            <button class="remove-exercise-btn text-red-500 hover:text-red-700" data-index="${index}">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </div>
+                    `;
+                });
+                selectedExercisesList.innerHTML = `<h3 class="text-lg font-semibold text-gray-700">${langData.custom.selectedExercisesTitle}</h3>` + html;
+            } else {
+                selectedExercisesList.innerHTML = `<h3 class="text-lg font-semibold text-gray-700">${langData.custom.selectedExercisesTitle}</h3><p id="no-exercises-message" class="text-gray-500 italic">${langData.custom.noExercises}</p>`;
+            }
+        }
+
+        /**
+         * Updates the Chart.js graph with new, simulated data for a given routine.
+         * @param {string} routineId The ID of the routine to display in the chart.
+         */
+        function updateChart(routineId) {
+            const routine = langData.routinesData[routineId];
+            if (!routine) return;
+
+            const labels = ['Semana 1', 'Semana 2', 'Semana 3', 'Semana 4', 'Semana 5'];
+            const data = labels.map((_, i) => (i + 1) * Math.floor(Math.random() * (15 - 5 + 1) + 5));
+
+            const chartData = {
+                labels: labels,
+                datasets: [{
+                    label: langData.routines.chartLabel(routine.label),
+                    data: data,
+                    backgroundColor: routine.color.replace('0.6', '0.2'),
+                    borderColor: routine.color.replace('0.6', '1'),
+                    borderWidth: 2,
+                    pointBackgroundColor: routine.color.replace('0.6', '1'),
+                    tension: 0.4,
+                    fill: true
+                }]
+            };
+
+            const chartOptions = {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        title: {
+                            display: true,
+                            text: langData.routines.chartYAxis,
+                            color: '#4b5563'
+                        },
+                        ticks: {
+                            color: '#6b7280'
+                        }
+                    },
+                    x: {
+                        title: {
+                            display: true,
+                            text: langData.routines.chartXAxis,
+                            color: '#4b5563'
+                        },
+                        ticks: {
+                            color: '#6b7280'
+                        }
+                    }
+                },
+                plugins: {
+                    legend: {
+                        labels: {
+                            color: '#4b5563',
+                            font: {
+                                size: 14
+                            }
+                        }
+                    },
+                    tooltip: {
+                        backgroundColor: 'rgba(0, 0, 0, 0.7)',
+                        titleColor: '#fff',
+                        bodyColor: '#fff'
+                    }
+                }
+            };
+
+            if (progressChart) {
+                progressChart.data = chartData;
+                progressChart.update();
+            } else {
+                progressChart = new Chart(chartCanvas, {
+                    type: 'line',
+                    data: chartData,
+                    options: chartOptions
+                });
+            }
+        }
+        
+        /**
+         * Renders all exercises from the predefined routines into the selection modal.
+         */
+        function renderExerciseSelectionModal() {
+            exerciseSelectionList.innerHTML = '';
+            for (const routineId in langData.routinesData) {
+                const routine = langData.routinesData[routineId];
+                const header = document.createElement('div');
+                header.className = 'expandable-header text-lg font-bold text-gray-700 flex justify-between items-center bg-gray-50 p-3 rounded-lg hover:bg-gray-100 transition-colors duration-200';
+                header.innerHTML = `<span>${routine.label}</span><i class="fas fa-chevron-down text-sm transition-transform duration-200"></i>`;
+                
+                const list = document.createElement('ul');
+                list.className = 'exercise-list space-y-2 mt-2 hidden';
+
+                routine.levels.forEach(({ exercises }) => {
+                    exercises.forEach(exercise => {
+                        const isSelected = exercisesInCustomRoutine.includes(exercise);
+                        const item = document.createElement('li');
+                        item.className = `exercise-item p-2 rounded-lg cursor-pointer transition-colors duration-150 border border-transparent ${isSelected ? 'selected-exercise' : ''}`;
+                        item.dataset.exercise = exercise;
+                        item.innerHTML = `
+                            <i class="far ${isSelected ? 'fa-check-circle' : 'fa-circle'} text-gray-400 mr-2"></i>
+                            <span>${exercise}</span>
+                        `;
+                        list.appendChild(item);
+                    });
+                });
+                
+                exerciseSelectionList.appendChild(header);
+                exerciseSelectionList.appendChild(list);
+            }
+        }
+
+        /**
+         * Function to update the entire UI based on the selected language.
+         */
+        function updateUI() {
+            // Update global language data
+            langData = i18n[currentLang];
+            
+            // Update static texts in the main UI
+            document.getElementById('main-title').textContent = langData.title;
+            document.getElementById('main-subtitle').textContent = langData.subtitle;
+            document.getElementById('user-info').textContent = langData.localStorageInfo;
+
+            // Update navigation links
+            document.querySelector('[data-section="principles"]').textContent = langData.nav.principles;
+            document.querySelector('[data-section="routines"]').textContent = langData.nav.routines;
+            document.querySelector('[data-section="levels"]').textContent = langData.nav.levels;
+            document.querySelector('[data-section="schedule"]').textContent = langData.nav.schedule;
+            document.querySelector('[data-section="exercise-database"]').textContent = langData.nav.database;
+            document.querySelector('[data-section="custom"]').textContent = langData.nav.custom;
+
+            // Update routine tab texts
+            document.querySelector('[data-routine="pushups"]').textContent = langData.routinesData.pushups.label;
+            document.querySelector('[data-routine="pullups"]').textContent = langData.routinesData.pullups.label;
+            document.querySelector('[data-routine="squats"]').textContent = langData.routinesData.squats.label;
+
+            // Update principles section
+            document.getElementById('principles-title').textContent = langData.principles.title;
+            const principlesGrid = document.getElementById('principles-grid');
+            principlesGrid.innerHTML = `
+                <div class="bg-amber-50 p-6 rounded-xl">
+                    <h3 class="text-xl font-bold text-amber-700 mb-2">${langData.principles.reps.title}</h3>
+                    <p class="text-gray-600">${langData.principles.reps.description}</p>
+                </div>
+                <div class="bg-amber-50 p-6 rounded-xl">
+                    <h3 class="text-xl font-bold text-amber-700 mb-2">${langData.principles.sets.title}</h3>
+                    <p class="text-gray-600">${langData.principles.sets.description}</p>
+                </div>
+                <div class="bg-amber-50 p-6 rounded-xl">
+                    <h3 class="text-xl font-bold text-amber-700 mb-2">${langData.principles.tempo.title}</h3>
+                    <p class="text-gray-600">${langData.principles.tempo.description}</p>
+                </div>
+                <div class="bg-amber-50 p-6 rounded-xl">
+                    <h3 class="text-xl font-bold text-amber-700 mb-2">${langData.principles.rest.title}</h3>
+                    <p class="text-gray-600">${langData.principles.rest.description}</p>
+                </div>
+                <div class="bg-amber-50 p-6 rounded-xl">
+                    <h3 class="text-xl font-bold text-amber-700 mb-2">${langData.principles.superset.title}</h3>
+                    <p class="text-gray-600">${langData.principles.superset.description}</p>
+                </div>
+                <div class="bg-amber-50 p-6 rounded-xl">
+                    <h3 class="text-xl font-bold text-amber-700 mb-2">${langData.principles.time.title}</h3>
+                    <p class="text-gray-600">${langData.principles.time.description}</p>
+                </div>
+            `;
+            
+            // Update schedule section
+            document.getElementById('schedule-title').textContent = langData.schedule.title;
+            const scheduleGrid = document.getElementById('schedule-grid');
+            scheduleGrid.innerHTML = `
+                <div class="border border-gray-200 p-6 rounded-lg">
+                    <h3 class="text-2xl font-semibold text-gray-700 mb-3">${langData.schedule.stacking.title}</h3>
+                    <p class="text-gray-600 mb-4">${langData.schedule.stacking.description}</p>
+                    <div class="flex space-x-2">
+                        <span class="bg-red-200 text-red-800 px-3 py-1 rounded-full text-sm font-semibold">Push</span>
+                        <span class="bg-blue-200 text-blue-800 px-3 py-1 rounded-full text-sm font-semibold">Pull</span>
+                        <span class="bg-green-200 text-green-800 px-3 py-1 rounded-full text-sm font-semibold">Squat</span>
+                    </div>
+                </div>
+                <div class="border border-gray-200 p-6 rounded-lg">
+                    <h3 class="text-2xl font-semibold text-gray-700 mb-3">${langData.schedule.triplets.title}</h3>
+                    <p class="text-gray-600 mb-4">${langData.schedule.triplets.description}</p>
+                    <div class="flex space-x-2">
+                        <span class="bg-red-200 text-red-800 px-3 py-1 rounded-full text-sm font-semibold">Push</span>
+                        <span class="bg-blue-200 text-blue-800 px-3 py-1 rounded-full text-sm font-semibold">Pull</span>
+                        <span class="bg-green-200 text-green-800 px-3 py-1 rounded-full text-sm font-semibold">Squat</span>
+                    </div>
+                </div>
+                <div class="border border-gray-200 p-6 rounded-lg md:col-span-2">
+                    <h3 class="text-2xl font-semibold text-gray-700 mb-3">${langData.schedule.oneDay.title}</h3>
+                    <p class="text-gray-600">${langData.schedule.oneDay.description}</p>
+                </div>
+            `;
+
+            // Update modal texts
+            document.getElementById('confirm-modal-title').textContent = langData.modals.confirm.title;
+            document.getElementById('confirm-modal-text').textContent = langData.modals.confirm.text;
+            document.getElementById('confirm-no-btn').textContent = langData.modals.confirm.no;
+            document.getElementById('confirm-yes-btn').textContent = langData.modals.confirm.yes;
+            document.getElementById('select-modal-title').textContent = langData.modals.select.title;
+            document.getElementById('close-select-modal-btn').textContent = langData.modals.select.close;
+
+            // Re-render dynamic sections based on current view
+            const activeSection = document.querySelector('.nav-link.tab-active');
+            if (activeSection) {
+                switchSection(activeSection.dataset.section);
+            } else {
+                switchSection('principles');
+            }
+        }
+
+        // --- Event Listeners and Initial App Setup ---
+
+        document.addEventListener('DOMContentLoaded', () => {
+            customRoutines = loadRoutines();
+            updateUI(); // Initial render with default language
+        });
+
+        // Event listeners for language buttons
+        langButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                const lang = button.id.split('-')[1];
+                if (currentLang !== lang) {
+                    currentLang = lang;
+                    document.body.parentElement.lang = currentLang; // Update HTML lang attribute
+                    updateUI(); // Re-render the entire UI
+                }
+            });
+        });
+
+        navLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                switchSection(link.dataset.section);
+            });
+        });
+
+        routineTabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                switchRoutine(tab.dataset.routine);
+            });
+        });
+
+        // Toggle manual exercise input
+        addManualBtn.addEventListener('click', () => {
+            manualInputSection.classList.toggle('hidden');
+        });
+
+        // Add a manually entered exercise
+        addManualConfirmBtn.addEventListener('click', () => {
+            const exerciseName = manualInput.value.trim();
+            if (exerciseName) {
+                exercisesInCustomRoutine.push(exerciseName);
+                manualInput.value = '';
+                renderCustomRoutineForm();
+                showStatusMessage(langData.status.addedManual);
+            }
+        });
+
+        // Add exercises from the database via modal
+        addFromDbBtn.addEventListener('click', () => {
+            exerciseSelectModal.style.display = 'flex';
+            renderExerciseSelectionModal();
+        });
+
+        // Close exercise selection modal
+        closeSelectModalBtn.addEventListener('click', () => {
+            exerciseSelectModal.style.display = 'none';
+        });
+
+        // Handle exercise selection in the modal
+        exerciseSelectionList.addEventListener('click', (e) => {
+            const item = e.target.closest('.exercise-item');
+            if (item) {
+                const exerciseName = item.dataset.exercise;
+                if (!exercisesInCustomRoutine.includes(exerciseName)) {
+                    exercisesInCustomRoutine.push(exerciseName);
+                    item.classList.add('selected-exercise');
+                    item.querySelector('i').classList.remove('fa-circle');
+                    item.querySelector('i').classList.add('fa-check-circle');
+                    showStatusMessage(`${langData.status.added} ${exerciseName}`);
+                } else {
+                    const index = exercisesInCustomRoutine.indexOf(exerciseName);
+                    if (index > -1) {
+                        exercisesInCustomRoutine.splice(index, 1);
+                        item.classList.remove('selected-exercise');
+                        item.querySelector('i').classList.remove('fa-check-circle');
+                        item.querySelector('i').classList.add('fa-circle');
+                        showStatusMessage(`${langData.status.removed} ${exerciseName}`);
+                    }
+                }
+                renderCustomRoutineForm();
+            }
+        });
+
+        // Toggle expandable lists in the modal
+        exerciseSelectionList.addEventListener('click', (e) => {
+            const header = e.target.closest('.expandable-header');
+            if (header) {
+                const list = header.nextElementSibling;
+                const icon = header.querySelector('i');
+                list.classList.toggle('hidden');
+                icon.classList.toggle('fa-chevron-down');
+                icon.classList.toggle('fa-chevron-up');
+            }
+        });
+
+        // Remove an exercise from the custom routine list
+        selectedExercisesList.addEventListener('click', (e) => {
+            const removeBtn = e.target.closest('.remove-exercise-btn');
+            if (removeBtn) {
+                const index = parseInt(removeBtn.dataset.index);
+                exercisesInCustomRoutine.splice(index, 1);
+                renderCustomRoutineForm();
+                showStatusMessage(langData.status.removed.replace(':', '') + ".");
+            }
+        });
+
+        // Save the custom routine
+        saveRoutineBtn.addEventListener('click', () => {
+            const routineName = document.getElementById('routine-name').value.trim();
+            if (!routineName) {
+                showStatusMessage(langData.status.nameRequired);
+                return;
+            }
+            if (exercisesInCustomRoutine.length === 0) {
+                showStatusMessage(langData.status.exercisesRequired);
+                return;
+            }
+
+            const newRoutine = {
+                id: Date.now().toString(), // Simple unique ID
+                name: routineName,
+                exercises: exercisesInCustomRoutine
+            };
+
+            customRoutines.push(newRoutine);
+            saveRoutines();
+            document.getElementById('routine-name').value = '';
+            exercisesInCustomRoutine = [];
+            renderCustomRoutineForm();
+            renderSavedRoutines();
+        });
+
+        // Handle routine deletion confirmation
+        savedRoutinesList.addEventListener('click', (e) => {
+            const deleteBtn = e.target.closest('.delete-routine-btn');
+            if (deleteBtn) {
+                routineToDeleteId = deleteBtn.dataset.id;
+                confirmModal.style.display = 'flex';
+            }
+        });
+
+        confirmYesBtn.addEventListener('click', () => {
+            if (routineToDeleteId) {
+                customRoutines = customRoutines.filter(r => r.id !== routineToDeleteId);
+                saveRoutines();
+                renderSavedRoutines();
+                confirmModal.style.display = 'none';
+                showStatusMessage(langData.status.deleted);
+                routineToDeleteId = null;
+            }
+        });
+
+        confirmNoBtn.addEventListener('click', () => {
+            confirmModal.style.display = 'none';
+            routineToDeleteId = null;
+        });
+    </script>
+</body>
+</html>
