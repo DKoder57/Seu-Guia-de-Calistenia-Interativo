@@ -1,9 +1,19 @@
 <!DOCTYPE html>
 <html lang="pt">
+
+<!-- 
+    Projeto: Plano de Treinamento de Calistenia Customizado
+    Autor: Seu Nome
+    Data: 2024-06-27
+    Descrição: Página web para um plano de treinamento de calistenia customizado com múltiplas seções, gráficos e suporte multilíngue.
+    Detalhes: Utiliza Tailwind CSS para estilização, Chart.js para gráficos e JavaScript para interatividade.
+
+-->
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Plano de Treino Interativo de Calistenia</title>
+    <title>Calisthenics training plan</title>
     <!-- Inclui a fonte Inter e o Font Awesome para ícones -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -13,6 +23,7 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link rel="stylesheet" href="style.css">
 </head>
+
 <body class="antialiased">
 
     <!-- Language Switcher Container -->
@@ -48,6 +59,7 @@
         </button>
     </div>
 
+    <!-- Main Container -->
     <div class="container mx-auto p-4 sm:p-6 md:p-8 max-w-7xl">
 
         <header class="text-center mb-10">
@@ -86,6 +98,8 @@
                     <button data-routine="pushups" class="routine-tab py-2 px-4 text-base font-semibold text-gray-500 border-b-2 border-transparent hover:border-amber-500 hover:text-amber-500"></button>
                     <button data-routine="pullups" class="routine-tab py-2 px-4 text-base font-semibold text-gray-500 border-b-2 border-transparent hover:border-amber-500 hover:text-amber-500"></button>
                     <button data-routine="squats" class="routine-tab py-2 px-4 text-base font-semibold text-gray-500 border-b-2 border-transparent hover:border-amber-500 hover:text-amber-500"></button>
+                    <button data-routine="abs" class="routine-tab py-2 px-4 text-base font-semibold text-gray-500 border-b-2 border-transparent hover:border-amber-500 hover:text-amber-500" ></button>
+                    <button data-routine="flexibility" class="routine-tab py-2 px-4 text-base font-semibold text-gray-500 border-b-2 border-transparent hover:border-amber-500 hover:text-amber-500" ></button>
                 </div>
 
                 <div class="mt-8">
@@ -122,26 +136,28 @@
             <section id="custom-section" class="content-section hidden">
                 <div class="bg-white p-8 rounded-2xl shadow-lg">
                     <h2 id="custom-title" class="text-3xl font-bold text-gray-800 mb-6 text-center"></h2>
+                    <!-- Routine Creation Form -->
                     <div class="max-w-xl mx-auto">
                         <div class="mb-4">
                             <label id="routine-name-label" for="routine-name" class="block text-gray-700 text-sm font-bold mb-2"></label>
                             <input type="text" id="routine-name" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="">
                         </div>
-                        
+                        <!-- Selected Exercises List -->
                         <div id="selected-exercises-list" class="mb-4 space-y-2">
                             <h3 id="selected-exercises-title" class="text-lg font-semibold text-gray-700"></h3>
                             <p id="no-exercises-message" class="text-gray-500 italic"></p>
                         </div>
-
+                        <!-- Buttons to add exercises -->
                         <div class="flex space-x-2 mb-6">
                             <button id="add-from-db-btn" class="bg-gray-200 text-gray-700 font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline hover:bg-gray-300">
                                 <i class="fas fa-plus mr-2"></i><span id="add-from-db-text"></span>
                             </button>
+                            <!-- Button to add exercise manually -->
                             <button id="add-manual-btn" class="bg-gray-200 text-gray-700 font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline hover:bg-gray-300">
                                 <i class="fas fa-pencil-alt mr-2"></i><span id="add-manual-text"></span>
                             </button>
                         </div>
-
+                        <!-- Manual Exercise Input Section (hidden by default) -->
                         <div id="exercise-input-section" class="space-y-2 hidden">
                             <label id="add-manual-label" for="exercise-manual" class="block text-gray-700 text-sm font-bold mb-2"></label>
                             <div class="flex items-center space-x-2">
@@ -149,7 +165,7 @@
                                 <button id="add-manual-confirm-btn" class="bg-amber-500 hover:bg-amber-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"></button>
                             </div>
                         </div>
-
+                        <!-- Save and Reset Buttons -->
                         <div class="text-right">
                              <button id="save-routine-btn" class="bg-amber-500 hover:bg-amber-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"></button>
                         </div>
@@ -157,9 +173,9 @@
                              <button id="reset-all-btn" class="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition">  🧨 Resetar Tudo
                             </button>
                         </div>
-
                     </div>
-                    
+
+                    <!-- Display Saved Custom Routines -->
                     <div id="custom-routines-display" class="mt-8">
                         <h3 id="saved-routines-title" class="text-2xl font-bold text-gray-800 mb-4 text-center"></h3>
                         <div id="saved-routines-list" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -170,7 +186,7 @@
             </section>
         </main>
         
-        <!-- Confirmation Modal -->
+        <!-- Confirmation Modal to reset all data -->
         <div id="confirm-modal" class="modal fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden z-50">
             <div class="bg-white rounded-lg p-6 max-w-sm mx-auto shadow-xl">
                 <h3 id="confirm-modal-title" class="text-xl font-bold mb-4"></h3>
@@ -192,8 +208,8 @@
                 </div>
             </div>
         </div>
-
     </div>
+
     <!-- Inclui o script JavaScript -->
     <script src="script.js"></script>
 </body>
