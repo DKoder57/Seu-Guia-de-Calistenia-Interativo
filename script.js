@@ -1,5 +1,9 @@
-       // Objeto de internacionalização (i18n) que contém todas as strings de texto em português e inglês.
+        /**
+        * Localization maping is located in the end of the code */
+        
+        // Objeto de internacionalização (i18n) que contém todas as strings de texto em português e inglês.
         const i18n = {
+            // Português (pt)
             pt: {
                 title: 'Seu Guia de Calistenia Interativo',
                 subtitle: 'Explore os exercícios, acompanhe sua progressão e organize sua rotina.',
@@ -31,6 +35,7 @@
                     superset: { title: 'Superset', description: 'Uma sequência de dois ou mais exercícios realizados consecutivamente, sem descanso. Geralmente, combinam-se exercícios de grupos musculares opostos (ex: flexões e remadas) para otimizar o tempo e aumentar a intensidade.' },
                     time: { title: 'Tempo (isométrico)', description: 'A duração que você mantém uma posição estática. É a principal medida para exercícios isométricos, que fortalecem músculos e estabilizam articulações sem movimento, como na prancha ou na ponte.' }
                 },
+
                 routines: {
                     title: (label) => `${label} - Níveis de Progressão`,
                     chartLabel: (label) => `Progresso de ${label}`,
@@ -119,9 +124,32 @@
                             { level: 4, exercises: ['Agachamento Pistol (Variantes Fáceis) (3x10/perna)', 'Agachamento Cossack (3x10/perna)', 'Agachamentos Profundos (3x10)'] },
                             { level: 5, exercises: ['Agachamento Pistol (3x3/perna)', 'Agachamento Pistol (Variantes Fáceis) (3x6/perna)', 'Agachamento Búlgaro (3x10/perna)', 'Agachamento Cossack (3x10/perna)', 'Agachamentos Profundos (3x10)'] }
                         ]
+                    },
+                    abs: {
+                        label: 'Abdômen (Abs)',
+                        color: 'rgba(255, 165, 0, 0.6)',
+                        levels: [
+                            { level: 1, exercises: ['Prancha (3x30s)', 'Elevação de Pernas Deitado (3x15)', 'Crunches (3x20)'] },
+                            { level: 2, exercises: ['Prancha Lateral (3x30s/lado)', 'Mountain Climbers (3x30s)', 'Elevação de Pernas Pendurado (3x10)'] },
+                            { level: 3, exercises: ['L-Sit (3x20s)', 'V-Ups (3x15)', 'Prancha com Toque nos Ombros (3x30s)'] },
+                            { level: 4, exercises: ['Dragon Flag Negativo (3x5)', 'Prancha (3x90s)', 'Pernas na Barra Fixa (3x12)'] },
+                            { level: 5, exercises: ['Dragon Flag (3x5)', 'L-Sit (3x60s)', 'Elevação de Pernas Pendurado com Rotação (3x15)'] }
+                        ]
+                    },
+                    flexibility: {
+                        label: 'Alongamentos (Flexibilidade)',
+                        color: 'rgba(143, 43, 224, 0.6)',
+                        levels: [
+                            { level: 1, exercises: ['Alongamento de Gato-Vaca (3x10 rep) [Coluna e Abdômen]', 'Alongamento de Tronco deitado (3x45s/lado) [Lombar e Glúteos]', 'Alongamento de Quadril Borboleta (3x60s) [Virilha e Quadril]'] },
+                            { level: 2, exercises: ['Alongamento de Peito (3x60s) [Peito e Ombros]', 'Alongamento de Ombro na parede (3x45s/lado) [Ombros e Peito]', 'Cachorro Olhando para Baixo (3x60s) [Posterior da Perna e Coluna]'] },
+                            { level: 3, exercises: ['Pinça Sentada (3x60s) [Posterior da Perna e Coluna]', 'Ponte Completa (3x45s) [Peito e Ombros]', 'Alongamento de Perna deitada (3x60s/perna) [Posterior da Perna]'] },
+                            { level: 4, exercises: ['Postura da Esfinge (3x60s) [Abdômen e Lombar]', 'Torção de Tronco Sentado (3x45s/lado) [Coluna e Quadril]', 'Alongamento Lateral em pé (3x45s/lado) [Tronco e Lombar]'] },
+                            { level: 5, exercises: ['Postura da Cobra (3x60s) [Peito e Abdômen]', 'Alongamento de Joelhos na parede (3x60s) [Panturrilhas e Tendões]', 'Postura da Criança (3x60s) [Costas e Ombros]'] }
+                        ]
                     }
                 }
             },
+            // English (en)
             en: {
                 title: 'Your Interactive Calisthenics Guide',
                 subtitle: 'Explore exercises, track your progress, and organize your routine.',
@@ -241,20 +269,42 @@
                             { level: 4, exercises: ['Pistol Squats Easier Variants (3x10/leg)', 'Cossack Squats (3x10/leg)', 'Deep Squats (3x10)'] },
                             { level: 5, exercises: ['Pistol Squats (3x3/leg)', 'Pistol Squats Easier Variants (3x6/leg)', 'Bulgarian Split Squats (3x10/leg)', 'Cossack Squats (3x10/leg)', 'Deep Squats (3x10)'] }
                         ]
+                    },
+                    abs: {
+                        label: 'Abdomen (Abs)',
+                        color: 'rgba(255, 165, 0, 0.6)',
+                        levels: [
+                            { level: 1, exercises: ['Prancha (3x30s)', 'Elevação de Pernas Deitado (3x15)', 'Crunches (3x20)'] },
+                            { level: 2, exercises: ['Prancha Lateral (3x30s/lado)', 'Mountain Climbers (3x30s)', 'Elevação de Pernas Pendurado (3x10)'] },
+                            { level: 3, exercises: ['L-Sit (3x20s)', 'V-Ups (3x15)', 'Prancha com Toque nos Ombros (3x30s)'] },
+                            { level: 4, exercises: ['Dragon Flag Negativo (3x5)', 'Prancha (3x90s)', 'Pernas na Barra Fixa (3x12)'] },
+                            { level: 5, exercises: ['Dragon Flag (3x5)', 'L-Sit (3x60s)', 'Elevação de Pernas Pendurado com Rotação (3x15)'] }
+                        ]
+                    },
+                    flexibility: {
+                        label: 'Flexibility',
+                        color: 'rgba(143, 43, 224, 0.6)',
+                        levels: [
+                            { level: 1, exercises: ['Cat-Cow Stretch (3x10 rep) [Spine and Abs]', 'Lying Spinal Twist (3x45s/side) [Lower Back and Glutes]', 'Butterfly Hip Stretch (3x60s) [Groin and Hips]'] },
+                            { level: 2, exercises: ['Chest Stretch (3x60s) [Chest and Shoulders]', 'Wall Shoulder Stretch (3x45s/side) [Shoulders and Chest]', 'Downward-Facing Dog (3x60s) [Hamstrings and Spine]'] },
+                            { level: 3, exercises: ['Seated Forward Fold (3x60s) [Hamstrings and Spine]', 'Full Bridge (3x45s) [Chest and Shoulders]', 'Lying Hamstring Stretch (3x60s/leg) [Hamstrings]'] },
+                            { level: 4, exercises: ['Sphinx Pose (3x60s) [Abs and Lower Back]', 'Seated Spinal Twist (3x45s/side) [Spine and Hips]', 'Standing Side Stretch (3x45s/side) [Torso and Lower Back]'] },
+                            { level: 5, exercises: ['Cobra Pose (3x60s) [Chest and Abs]', 'Knees-to-Wall Stretch (3x60s) [Calves and Hamstrings]', 'Child\'s Pose (3x60s) [Back and Shoulders]'] }
+                        ]
                     }
                 }
             }
         };
 
-        // Estado global da aplicação
-        const localStorageKey = 'calisthenics_routines';
-        let customRoutines = [];
+        // Global state of the app
+        const localStorageKey = 'calisthenics_routines'; // Key to store routines in Local Storage
+        let customRoutines = []; // Array to store custom routines
         let exercisesInCustomRoutine = [];
         let currentLang = 'pt'; // Define o idioma padrão como português
         let langData = i18n[currentLang];
 
-        // Obtém referências para os elementos do DOM
-        const navLinks = document.querySelectorAll('.nav-link');
+        // Get references to the element DOM 
+        const navLinks = document.querySelectorAll('.nav-link'); 
         const routineTabs = document.querySelectorAll('.routine-tab');
         const contentSections = document.querySelectorAll('.content-section');
         const routineDetailsContainer = document.getElementById('routine-details');
@@ -280,6 +330,7 @@
         const statusMessageElement = document.getElementById('status-message');
         const langButtons = document.querySelectorAll('.lang-button');
 
+        // Variables to the graphic and deletion handling 
         let progressChart;
         let routineToDeleteId = null;
 
@@ -373,7 +424,7 @@
 
             let html = `<h2 class="text-3xl font-bold text-center mb-6 text-gray-800">${langData.routines.title(routine.label)}</h2>`;
             html += '<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">';
-
+            // Loop through each level and its exercises
             routine.levels.forEach(({ level, exercises }) => {
                 html += `
                     <div class="level-card bg-white p-6 rounded-lg shadow-md border-l-4" style="border-color: ${routine.color};">
@@ -663,6 +714,8 @@
             document.querySelector('[data-routine="pushups"]').textContent = langData.routinesData.pushups.label;
             document.querySelector('[data-routine="pullups"]').textContent = langData.routinesData.pullups.label;
             document.querySelector('[data-routine="squats"]').textContent = langData.routinesData.squats.label;
+            document.querySelector('[data-routine="abs"]').textContent = langData.routinesData.abs.label;
+            document.querySelector('[data-routine="flexibility"]').textContent = langData.routinesData.flexibility.label;
 
             // Update principles section
             document.getElementById('principles-title').textContent = langData.principles.title;
@@ -705,6 +758,8 @@
                         <span class="bg-red-200 text-red-800 px-3 py-1 rounded-full text-sm font-semibold">Push</span>
                         <span class="bg-blue-200 text-blue-800 px-3 py-1 rounded-full text-sm font-semibold">Pull</span>
                         <span class="bg-green-200 text-green-800 px-3 py-1 rounded-full text-sm font-semibold">Squat</span>
+                        <span class="bg-orange-200 text-orange-800 px-3 py-1 rounded-full text-sm font-semibold">Abs</span>
+                        <span class="bg-orange-200 text-orange-800 px-3 py-1 rounded-full text-sm font-semibold">Flexibility</span>
                     </div>
                 </div>
                 <div class="border border-gray-200 p-6 rounded-lg">
@@ -714,6 +769,8 @@
                         <span class="bg-red-200 text-red-800 px-3 py-1 rounded-full text-sm font-semibold">Push</span>
                         <span class="bg-blue-200 text-blue-800 px-3 py-1 rounded-full text-sm font-semibold">Pull</span>
                         <span class="bg-green-200 text-green-800 px-3 py-1 rounded-full text-sm font-semibold">Squat</span>
+                        <span class="bg-orange-200 text-orange-800 px-3 py-1 rounded-full text-sm font-semibold">Abs</span>
+                        <span class="bg-orange-200 text-orange-800 px-3 py-1 rounded-full text-sm font-semibold">Flexibility</span>
                     </div>
                 </div>
                 <div class="border border-gray-200 p-6 rounded-lg md:col-span-2">
@@ -859,7 +916,7 @@
         showStatusMessage(langData.status.exercisesRequired);
         return;
     }
-
+    // Create a new routine object
     const newRoutine = {
         id: Date.now().toString(),
         name: routineName,
@@ -867,13 +924,13 @@
     };
 
     customRoutines.push(newRoutine);
-    saveRoutines(); // salva no localStorage
-    renderSavedRoutines(); // atualiza a interface imediatamente
+    saveRoutines(); // save in local store
+    renderSavedRoutines(); // update the saved routines list
 
-    // Limpa os campos
+    // Enrase the form
     routineNameInput.value = '';
     exercisesInCustomRoutine = [];
-    renderCustomRoutineForm(); // atualiza a seção de criação
+    renderCustomRoutineForm(); // update creation section
 });
 
 
@@ -903,17 +960,17 @@
             routineToDeleteId = null;
         });
     document.getElementById('reset-all-btn').addEventListener('click', () => {
-    routineToDeleteId = null; // Garante que não interfira na exclusão individual
+    routineToDeleteId = null; // Ensure that's not interfere with individual deletions
 
     const confirmReset = confirm('Tem certeza que deseja apagar TODAS as rotinas e exercícios? Essa ação não pode ser desfeita.');
 
     if (confirmReset) {
-        // Apaga tudo
+        // Clear all data
         localStorage.removeItem('calisthenics_routines');
         customRoutines = [];
         exercisesInCustomRoutine = [];
 
-        // Atualiza interface
+        // Update interface
         renderSavedRoutines();
         renderCustomRoutineForm();
         showStatusMessage('Tudo foi resetado com sucesso!');
@@ -921,3 +978,43 @@
         showStatusMessage('Reset cancelado.');
     }
 });
+
+/** Aqui está um mapa de localização do código-fonte:
+
+* Configuração e Dados Iniciais (Linhas 246 - 351)
+
+  - Linhas 246-341: Objeto de internacionalização (i18n) com todo o texto da interface em português e inglês. Ele contém os títulos, descrições, rótulos de navegação, mensagens de status e todos os dados de rotinas e exercícios.
+
+  - Linhas 342-345: Variáveis de estado global, como a chave de armazenamento local (localStorageKey), o array de rotinas personalizadas (customRoutines) e o idioma atual da aplicação.
+
+  - Linhas 346-351: Referências a elementos do DOM (Document Object Model). Essas variáveis são usadas para manipular o HTML e interagir com a interface.
+
+* Funções Principais (Linhas 353 - 440)
+
+  - Linhas 353-356: A função showStatusMessage(message), que exibe uma mensagem temporária na tela usando um temporizador.
+
+  - Linhas 357-362: Funções para salvar e carregar as rotinas personalizadas no localStorage do navegador.
+
+  - Linhas 363-370: A função switchSection(sectionId), responsável por alternar a visualização entre as diferentes seções principais da aplicação (Princípios, Rotinas, etc.).
+
+  - Linhas 371-380: As funções switchRoutine e renderRoutineDetails, que gerenciam a exibição das rotinas de exercícios pré-definidas e seus níveis.
+
+  - Linhas 381-389: A função renderAllLevels, que compila e exibe todos os exercícios, agrupados por nível de dificuldade, de todas as rotinas.
+
+
+  - Linhas 390-395: A função renderExerciseDatabase, que renderiza o banco de dados completo de exercícios.
+
+
+  - Linhas 396-411: A função renderSavedRoutines e renderCustomRoutineForm, que controlam a visualização das rotinas salvas e o formulário para criação de novas rotinas.
+
+
+  - Linhas 412-431: A função updateChart, que usa a biblioteca Chart.js para criar um gráfico de progresso com dados simulados para cada rotina.
+
+
+  - Linhas 432-440: A função renderExerciseSelectionModal, que preenche o modal de seleção de exercícios com dados do banco de rotinas.
+
+* Eventos e Inicialização (Linhas 441 - 490)
+
+  - Linhas 441-464: A função updateUI, que é chamada para atualizar todo o texto da interface quando o idioma é alterado.
+
+  - Linhas 465-490: Todos os event listeners que conectam as ações do usuário (cliques nos botões de idioma, navegação, salvar/excluir rotinas) às funções correspondentes para controlar a lógica da aplicação. */
